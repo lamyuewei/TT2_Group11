@@ -23,13 +23,6 @@ db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
 
-<<<<<<< HEAD
-    if (username == "user" and password == "123"):
-        return 'OK', 200
-    else:
-        return 'Wrong password', 401
-=======
-
 
 def create_app():
     app = Flask(__name__)
@@ -61,4 +54,3 @@ def create_app():
 #     else:
 #         return 'Wrong password', 401
     
->>>>>>> 14fd9420b461b08c608fe44a62d571ebfa3a1371

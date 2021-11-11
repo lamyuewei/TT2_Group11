@@ -1,5 +1,7 @@
+from datetime import datetime
 from . import db
 from flask_login import UserMixin
+from datetime import datetime
 
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,3 +22,5 @@ class ProjectModel(db.Model):
 
     def __repr__(self):
         return "Project Model(user_id={0}, name={1}, budget={2}, description = {3})".format(self.user_id,self.name,self.budget,self.description)
+
+        

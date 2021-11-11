@@ -4,7 +4,7 @@ import json
 exp = open('./data/expense.json')
 exp_data = list(json.load(exp))
 
-data = [{
+data = {
         "id": 1,
         "project_id": 2,
         "category_id": 2,
@@ -15,7 +15,7 @@ data = [{
         "created_by": "Jacky",
         "updated_at": "2021-11-06T16:00:00.000Z",
         "updated_by": "Jacky"
-    }]
+    }
 
 BASE = "http://127.0.0.1:5000/"
 
