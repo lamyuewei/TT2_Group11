@@ -1,22 +1,13 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
+from .models import Account
 
 app = Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database_new.db'
 db = SQLAlchemy(app)
 
-class Account(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable = False)
-    password = db.Column(db.String(100), nullable = False)
-    name = db.Column(db.String(100), nullable = False)
-    appointment = db.Column(db.String(100), nullable = False)
-
-    def __repr__(self):
-        return "Account(username={0}, password={1}, name={2}, appointment = {3})".format(self.username,self.password,self.name,self.appointment)
-    
 #db.create_all()
 
 acc_put_args = reqparse.RequestParser()
@@ -81,7 +72,7 @@ class Acc(Resource):
     def delete(self, user_id):
         result = Account.query.filter_by(id=user_id).first()
         if not result:
-            abort(404, message ="Video ID doesn't exist, cannot delete")
+            abort(404, message ="User ID doesn't exist, cannot delete")
         else:
             db.session.delete(result)
             db.session.commit()

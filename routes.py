@@ -1,36 +1,16 @@
-from flask import (
-    Flask,
-    render_template,
-    redirect,
-    flash,
-    url_for,
-    session
-)
-
 from datetime import timedelta
-from sqlalchemy.exc import (
-    IntegrityError,
-    DataError,
-    DatabaseError,
-    InterfaceError,
-    InvalidRequestError,
-)
+
+from flask import Flask, flash, redirect, render_template, session, url_for
+from flask_bcrypt import Bcrypt, check_password_hash, generate_password_hash
+from flask_login import (LoginManager, UserMixin, current_user, login_required,
+                         login_user, logout_user)
+from sqlalchemy.exc import (DatabaseError, DataError, IntegrityError,
+                            InterfaceError, InvalidRequestError)
 from werkzeug.routing import BuildError
 
-from flask_bcrypt import Bcrypt,generate_password_hash, check_password_hash
-
-from flask_login import (
-    UserMixin,
-    login_user,
-    LoginManager,
-    current_user,
-    logout_user,
-    login_required,
-)
-
-from app import db,login_manager,bcrypt
-from UserDBAPI import User
+from app import bcrypt, db, login_manager
 from forms import login_form
+from UserDBAPI import User
 
 
 @login_manager.user_loader
