@@ -1,23 +1,14 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
+from .models import ProjectModel
 
 app = Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database_project.db'
 db = SQLAlchemy(app)
-
-class ProjectModel(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable = False)
-    name = db.Column(db.String(100), nullable = False)
-    budget = db.Column(db.Integer, nullable = False)
-    description = db.Column(db.String(100), nullable = False)
-
-    def __repr__(self):
-        return "Project Model(user_id={0}, name={1}, budget={2}, description = {3})".format(self.user_id,self.name,self.budget,self.description)
     
-db.create_all()
+#db.create_all()
 
 pro_put_args = reqparse.RequestParser()
 pro_put_args.add_argument("user_id", type=int, help="user_id required", required = True) 
