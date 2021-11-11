@@ -19,37 +19,39 @@ login_manager.session_protection = "strong"
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 
-
+db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
 
 
-app = Flask(__name__)
-api = Api(app)
-db = SQLAlchemy(app)
 
-app.secret_key = 'TEAM_12'
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+def create_app():
+    app = Flask(__name__)
 
-login_manager.init_app(app)
-migrate.init_app(app, db)
-bcrypt.init_app(app)
+    app.secret_key = 'TEAM_12'
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+    login_manager.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    
+    return app
+
+# @app.route("/")
+# def home():
+#     return "Hi"
 
 
-@app.route("/")
-def home():
-    return "Hi"
 
+# @app.route('/auth_test', methods=['GET','POST'])
+# def auth():
+#     username = request.form.get('username')
+#     password = request.form.get('password')
 
-
-@app.route('/auth_test', methods=['GET','POST'])
-def auth():
-    username = request.form.get('username')
-    password = request.form.get('password')
-
-    if (username == "user" and password == "123"):
-        return 'OK', 200
-    else:
-        return 'Wrong password', 401
+#     if (username == "user" and password == "123"):
+#         return 'OK', 200
+#     else:
+#         return 'Wrong password', 401
     

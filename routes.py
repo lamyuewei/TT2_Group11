@@ -8,14 +8,16 @@ from sqlalchemy.exc import (DatabaseError, DataError, IntegrityError,
                             InterfaceError, InvalidRequestError)
 from werkzeug.routing import BuildError
 
-from app import bcrypt, db, login_manager
+from app import create_app, bcrypt, db, login_manager
 from forms import login_form
-from UserDBAPI import User
+from UserDBAPI import Account
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return Account.query.get(int(user_id))
+
+app = create_app()
 
 @app.before_request
 def session_handler():
@@ -24,6 +26,7 @@ def session_handler():
 
 @app.route("/", methods=("GET", "POST"), strict_slashes=False)
 def index():
+    print('Hi')
     return render_template("index.html",title="Home")
 
 
@@ -33,7 +36,7 @@ def login():
 
     if form.validate_on_submit():
         try:
-            user = User.query.filter_by(email=form.email.data).first()
+            user = Account.query.filter_by(email=form.email.data).first()
             if check_password_hash(user.pwd, form.pwd.data):
                 login_user(user)
                 return redirect(url_for('index'))
