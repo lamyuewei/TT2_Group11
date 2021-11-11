@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy     # For Database
 
@@ -9,15 +9,17 @@ db = SQLAlchemy(app)
 #db.create_all()   ## Only do this once
 
 @app.route("/")
-
 def home():
     return "Hi"
 
 
-@app.route("/test_login")
-def auth(name, pw):
-    if name == "name" and pw == "pass":
-        return "Authenticated"
+@app.route('/auth', methods=['POST'])
+def auth():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if (username == "user" and password == "123"):
+        return 'OK', 200
     else:
-        return "Wrong password"
+        return 'Wrong password', 401
 
