@@ -14,7 +14,7 @@ BASE = "http://127.0.0.1:5000/"
 #    print(response)
 
 # test get function
-response = requests.get(BASE + "acc/")
+response = requests.get(BASE + "acc/1")
 print(response.json())
 
 

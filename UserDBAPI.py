@@ -1,14 +1,11 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
-from .models import Account
+from models import Account, db, app
+from app import create_app
 
-app = Flask(__name__)
 api = Api(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database_new.db'
-db = SQLAlchemy(app)
-
-#db.create_all()
+db.create_all()
 
 acc_put_args = reqparse.RequestParser()
 acc_put_args.add_argument("username", type=str, help="username required", required = True) 
@@ -32,29 +29,27 @@ acc_fields = {
 
 class Acc(Resource):
     @marshal_with(acc_fields)
-    def get(self, user_id):
-        # if sqldb
-        result = Account.query.filter_by(id=user_id).first()
+    def get(self, ID):
+        result = Account.query.filter_by(id=ID).first()
         if not result:
             abort(404, message="User not found with the given ID")
         return result
 
     @marshal_with(acc_fields)
-    def put(self, user_id):
+    def put(self, ID):
         args = acc_put_args.parse_args()
-        #if sqldb
-        result = Account.query.filter_by(id=user_id).first()
+        result = Account.query.filter_by(id=ID).first()
         if result:
             abort(409, message ="User ID taken...")
-        user = Account(id=user_id, username=args['username'], password=args['password'], name=args['name'], appointment=args['appointment'])
+        user = Account(id=ID, username=args['username'], password=args['password'], name=args['name'], appointment=args['appointment'])
         db.session.add(user)
         db.session.commit()
         return user, 201
 
     @marshal_with(acc_fields)    
-    def patch(self, user_id):
+    def patch(self, ID):
         args = acc_update_args.parse_args()
-        result = Account.query.filter_by(id=user_id).first()
+        result = Account.query.filter_by(id=ID).first()
         if not result:
             abort(404, message ="User ID doesn't exist, cannot update")
         if args['username']:
@@ -69,8 +64,8 @@ class Acc(Resource):
         return result
 
     @marshal_with(acc_fields)  
-    def delete(self, user_id):
-        result = Account.query.filter_by(id=user_id).first()
+    def delete(self, ID):
+        result = Account.query.filter_by(id=ID).first()
         if not result:
             abort(404, message ="User ID doesn't exist, cannot delete")
         else:
@@ -78,7 +73,7 @@ class Acc(Resource):
             db.session.commit()
             return '', 204
 
-api.add_resource(Acc, "/acc/<string:user_id>")
+api.add_resource(Acc, "/acc/<string:ID>")
 
 if __name__ == '__main__':
     app.run(debug=True)

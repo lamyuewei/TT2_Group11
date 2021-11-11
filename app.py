@@ -19,6 +19,7 @@ login_manager.session_protection = "strong"
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 
+DB_Name = "new_Db.db"
 db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
@@ -28,7 +29,7 @@ def create_app():
     app = Flask(__name__)
 
     app.secret_key = 'TEAM_12'
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{0}".format(DB_Name)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
     login_manager.init_app(app)

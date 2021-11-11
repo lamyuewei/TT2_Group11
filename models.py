@@ -1,7 +1,11 @@
 from datetime import datetime
-from . import db
 from flask_login import UserMixin
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy 
+from app import create_app
+
+app = create_app()
+db = SQLAlchemy(app)
 
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
