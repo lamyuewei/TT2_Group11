@@ -1,4 +1,3 @@
-import re
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
@@ -11,27 +10,29 @@ api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database_new1.db'
 db = SQLAlchemy(app)
 
+# db.create_all()
+
 class ExpenseModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable = False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable = False)
+    # project_id = db.Column(db.Integer, nullable = False)
+    # category_id = db.Column(db.Integer, nullable = False)
     name = db.Column(db.String(100), nullable = False)
     description = db.Column(db.String(200), nullable = False)
-    amount = db.Column(db.REAL, nullable = False)
+    amount = db.Column(db.Integer, nullable = False)
     created_at = db.Column(db.String, nullable = False)
     created_by = db.Column(db.String(100), nullable = False)
     updated_at = db.Column(db.String, nullable = False)
     updated_by = db.Column(db.String(100), nullable = False)
 
-    def __repr__(self):
-        return "Expense(id={0}, project_id={1}, category_id={2}, name={3}, description={4}, amount={5}, created_at={6}, created_by={7}, updated_at={8}, created_by={9})".format(self.name,self.description,self.amount,self.created_at,self.created_by,self.updated_at,self.updated_by)
+    # def __repr__(self):
+    #     return "Expense(id={0}, project_id={1}, category_id={2}, name={3}, description={4}, amount={5}, created_at={6}, created_by={7}, updated_at={8}, created_by={9})".format(self.name,self.description,self.amount,self.created_at,self.created_by,self.updated_at,self.updated_by)
         
 
 
 exp_put_args = reqparse.RequestParser()
 exp_put_args.add_argument("name", type=str, help="name required", required = True) 
 exp_put_args.add_argument("description", type=str, help="description required", required = True) 
-exp_put_args.add_argument("amount", type=float, help="amount required", required = True) 
+exp_put_args.add_argument("amount", type=int, help="amount required", required = True) 
 exp_put_args.add_argument("created_at", type=str, help="created_at required", required = True)
 exp_put_args.add_argument("created_by", type=str, help="created_by required", required = True)
 exp_put_args.add_argument("updated_at", type=str, help="updated_at required", required = True)
@@ -40,7 +41,7 @@ exp_put_args.add_argument("updated_by", type=str, help="updated_by required", re
 exp_update_args = reqparse.RequestParser()
 exp_update_args.add_argument("name", type=str, help="name required", required = True) 
 exp_update_args.add_argument("description", type=str, help="description required", required = True) 
-exp_update_args.add_argument("amount", type=float, help="amount required", required = True) 
+exp_update_args.add_argument("amount", type=int, help="amount required", required = True) 
 exp_update_args.add_argument("created_at", type=str, help="created_at required", required = True)
 exp_update_args.add_argument("created_by", type=str, help="created_by required", required = True)
 exp_update_args.add_argument("updated_at", type=str, help="updated_at required", required = True)
@@ -50,7 +51,7 @@ exp_fields = {
     'id': fields.Integer,
     'name': fields.String,
     'description': fields.String,
-    'amount' : fields.Float,
+    'amount' : fields.Integer,
     'created_at': fields.String,
     'created_by': fields.String,
     'updated_at': fields.String,
@@ -110,7 +111,7 @@ class Expense(Resource):
             db.session.commit()
             return '', 204
 
-api.add_resource(Expense, "/exp/<string:exp_id>")
+api.add_resource(Expense, "/exp/<int:exp_id>")
 
 
 if __name__ == '__main__':

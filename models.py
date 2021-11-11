@@ -36,3 +36,20 @@ class CategoryModel(db.Model):
 
     def __repr__(self):
         return "Project Category(id={0}, name={1})".format(self.id,self.name)
+
+class ExpenseModel(db.Model):
+    __tablename__ = 'expense'
+    id = db.Column(db.Integer, primary_key=True)
+    # project_id = db.Column(db.Integer, nullable = False)
+    # category_id = db.Column(db.Integer, nullable = False)
+    name = db.Column(db.String(100), nullable = False)
+    description = db.Column(db.String(200), nullable = False)
+    amount = db.Column(db.Integer, nullable = False)
+    created_at = db.Column(db.String, nullable = False)
+    created_by = db.Column(db.String(100), nullable = False)
+    updated_at = db.Column(db.String, nullable = False)
+    updated_by = db.Column(db.String(100), nullable = False)
+
+    def __repr__(self):
+        return "Expense(id={0}, project_id={1}, category_id={2}, name={3}, description={4}, amount={5}, created_at={6}, created_by={7}, updated_at={8}, updated_by={9})".format(self.id,self.name,self.description,self.amount,self.created_at,self.created_by,self.updated_at,self.updated_by)  
+        

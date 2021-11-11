@@ -1,13 +1,10 @@
 import requests
 import json
 
-exp = open('./data/expense.json')
-exp_data = list(json.load(exp))
+# exp = open('./data/expense.json')
+# exp_data = list(json.load(exp))
 
 data = {
-        "id": 1,
-        "project_id": 2,
-        "category_id": 2,
         "name": "Server Maintenance",
         "description": "Server maintenance and upgrading work to incorporate BC plans",
         "amount": 30000,
