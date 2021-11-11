@@ -1,6 +1,6 @@
 from datetime import timedelta
-
-from flask import Flask, flash, redirect, render_template, session, url_for
+import logging
+from flask import Flask, flash, redirect, render_template, session, url_for, request, Response
 from flask_bcrypt import Bcrypt, check_password_hash, generate_password_hash
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
@@ -30,27 +30,37 @@ def index():
     return render_template("index.html",title="Home")
 
 
-@app.route("/auth/", methods=("GET", "POST"), strict_slashes=False)
-def login():
-    form = login_form()
+@app.route("/auth", methods=(['POST']), strict_slashes=False)
+def login(email, pwd):
+    app.logger.warning('testing warning log')
+    user = Account.query.filter_by(username = email).first()
 
-    if form.validate_on_submit():
-        try:
-            user = Account.query.filter_by(email=form.email.data).first()
-            if check_password_hash(user.pwd, form.pwd.data):
-                login_user(user)
-                return redirect(url_for('index'))
-            else:
-                flash("Invalid Username or password!", "danger")
-        except Exception as e:
-            flash(e, "danger")
+    if not user or not check_password_hash(user.password, pwd):
+        return Response("", 401)
+    
+    return Response("", 200)
 
-    return render_template("auth.html",
-        form=form,
-        text="Login",
-        title="Login",
-        btn_action="Login"
-        )
+
+    # form = login_form()
+
+    # if form.validate_on_submit():
+    #     try:
+    #         user = Account.query.filter_by(username = form.user.data).first()
+    #         if check_password_hash(user.password, form.pwd.data):
+    #             login_user(user)
+    #             print("login successful")
+    #             return 200 #redirect(url_for('index')), 200
+    #         else:
+    #             flash("Invalid Username or password!", "danger")
+    #     except Exception as e:
+    #         flash(e, "danger")
+
+    # return render_template("auth.html",
+    #     form=form,
+    #     text="Login",
+    #     title="Login",
+    #     btn_action="Login"
+    #     )
 
 
 if __name__ == "__main__":
