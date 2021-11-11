@@ -4,7 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 from app import create_app
 from models import Account, db, app
 
+DB_Name = "UserAcc.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{0}".format(DB_Name)
 api = Api(app)
+db.create_all()
 
 acc_put_args = reqparse.RequestParser()
 acc_put_args.add_argument("username", type=str, help="username required", required = True) 
