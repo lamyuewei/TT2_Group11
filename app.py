@@ -28,7 +28,7 @@ bcrypt = Bcrypt()
 def create_app():
     app = Flask(__name__)
 
-    app.secret_key = 'TEAM_12'
+    app.secret_key = 'TEAM_11'
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{0}".format(DB_Name)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
