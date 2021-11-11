@@ -5,6 +5,7 @@ from app import create_app
 from models import Account, db, app
 
 api = Api(app)
+db.create_all()
 
 acc_put_args = reqparse.RequestParser()
 acc_put_args.add_argument("username", type=str, help="username required", required = True) 
