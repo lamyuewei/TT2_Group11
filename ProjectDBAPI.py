@@ -1,13 +1,10 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
-from .models import ProjectModel
+from models import ProjectModel, db, app
+from app import create_app
 
-app = Flask(__name__)
 api = Api(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database_project.db'
-db = SQLAlchemy(app)
-    
 #db.create_all()
 
 pro_put_args = reqparse.RequestParser()
@@ -33,7 +30,6 @@ pro_fields = {
 class Pro(Resource):
     @marshal_with(pro_fields)
     def get(self, id):
-        # if sqldb
         result = ProjectModel.query.filter_by(id=id).all()
         if not result:
             abort(404, message="User not found with the given ID")
@@ -42,7 +38,6 @@ class Pro(Resource):
     @marshal_with(pro_fields)
     def put(self, id):
         args = pro_put_args.parse_args()
-        #if sqldb
         result = ProjectModel.query.filter_by(id=id).all()
         if result:
             abort(409, message ="User ID taken...")
