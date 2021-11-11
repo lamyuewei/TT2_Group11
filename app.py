@@ -26,7 +26,6 @@ bcrypt = Bcrypt()
 
 app = Flask(__name__)
 api = Api(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db = SQLAlchemy(app)
 
 app.secret_key = 'secret-key'
@@ -34,7 +33,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 login_manager.init_app(app)
-db.init_app(app)
 migrate.init_app(app, db)
 bcrypt.init_app(app)
 
