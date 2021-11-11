@@ -28,7 +28,7 @@ app = Flask(__name__)
 api = Api(app)
 db = SQLAlchemy(app)
 
-app.secret_key = 'secret-key'
+app.secret_key = 'TEAM_12'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
