@@ -22,4 +22,3 @@ def auth():
         return 'OK', 200
     else:
         return 'Wrong password', 401
-
