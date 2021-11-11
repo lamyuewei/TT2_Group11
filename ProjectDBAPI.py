@@ -34,7 +34,7 @@ class Pro(Resource):
     @marshal_with(pro_fields)
     def get(self, id):
         # if sqldb
-        result = ProjectModel.query.filter_by(id=id).first()
+        result = ProjectModel.query.filter_by(id=id).all()
         if not result:
             abort(404, message="User not found with the given ID")
         return result
@@ -43,7 +43,7 @@ class Pro(Resource):
     def put(self, id):
         args = pro_put_args.parse_args()
         #if sqldb
-        result = ProjectModel.query.filter_by(id=id).first()
+        result = ProjectModel.query.filter_by(id=id).all()
         if result:
             abort(409, message ="User ID taken...")
         project = ProjectModel(id=id, user_id=args['user_id'], name=args['name'], budget=args['budget'], description=args['description'])
